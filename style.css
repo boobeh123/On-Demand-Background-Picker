@@ -14,7 +14,15 @@ html {
 h1 {
     text-align: center;
     letter-spacing: -1px;
-    /* position: absolute; */
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    top: -4px;
+    right: 5px;
+    /* heading is now invisible but can be highlighted */
+    color: transparent;
+    /* x-axis, y-axis, blur-radius, color   */
+    text-shadow: 0 0 4px #999;
 }
 
 body {
