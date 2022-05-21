@@ -10,8 +10,8 @@ const canvas = document.querySelector('canvas');
 // Drawing context on the canvas. Supports 2D and 3D. "Tells computer to use the 2d library"
 const ctx = canvas.getContext('2d');
 // Set width & height on the canvas to the innerWidth of the window.
-const width = canvas.width = width.innerWidth;
-const height = canvas.height = width.innerHeight;
+const width = canvas.width = window.innerWidth;
+const height = canvas.height = window.innerHeight;
 
 // This function generates random (whole) numbers.
 // The numbers generated will control ball size, velocity, and inertia.
@@ -39,6 +39,22 @@ class Ball {
         this.velocityY = velocityY;
         this.color = color;
         this.size = size;
+    }
+
+    // Method that will draw the ball object
+    draw () {
+        // ctx accesses the Canvas commands. beginPath starts drawing shape
+        ctx.beginPath();
+        // The color generated will fill the ball object
+        ctx.fillStyle = this.color;
+        /* Creates a circular arc. 
+        Ball starting positions is the center of the arc. 
+        Ball size, self explanatory.
+        Arc starts at 0 degrees and ends at 2*Math.PI degrees.
+        * Half circle =  start at 0 degrees & end at 3 degrees
+        */
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI)
+        ctx.fill();
     }
 }
 
