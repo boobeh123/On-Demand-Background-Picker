@@ -47,14 +47,42 @@ class Ball {
         ctx.beginPath();
         // The color generated will fill the ball object
         ctx.fillStyle = this.color;
-        /* Creates a circular arc. 
-        Ball starting positions is the center of the arc. 
-        Ball size, self explanatory.
-        Arc starts at 0 degrees and ends at 2*Math.PI degrees.
-        * Half circle =  start at 0 degrees & end at 3 degrees
-        */
+        // Creates a circular arc. Ball starting positions is the center of the arc.
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI)
         ctx.fill();
+    }
+    // Method that moves the ball & determines what happens if it reaches the edge of a screen.
+    update() {
+        // This if statement determines what happens when the ball reaches the right wall.
+        // this.x is the center of the ball. this.size are the edges of the ball.
+        // If center + edges is greater than the innerWidth of the screen...Then reverse the direction of the ball.
+        if (this.x + this.size >= width) {
+            // A positive * negative will result in negative. This reverses the direction.
+            this.velocityX = -(this.velocityX);
+        }
+
+        // This if statement determines what happens when the ball reaches the left wall.
+        if (this.x - this.size <= 0) {
+            // A negative * negative will result in positive. This reverses the direction.
+            this.velocityX = -(this.velocityX);
+        }
+
+        // This if statement determines what happens when the ball reaches the top wall.
+        if (this.y + this.size >= height) {
+            // A positive * negative will result in negative. This reverses the direction.
+            this.velocityY = -(this.velocityY);
+        }
+
+        // This if statement determines what happens when the ball reaches the bottom wall.
+        if (this.y - this.size <= 0) {
+            // A negative * negative will result in positive. This reverses the direction.
+            this.velocityY = -(this.velocityY);
+        }
+
+        // This moves the ball. Each time we re-draw the ball, draw the ball in a different location. 
+        // Take the current location on the canvas and add the velocity to it.
+        this.x += this.velocityX;
+        this.y += this.velocityY;
     }
 }
 
