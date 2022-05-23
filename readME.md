@@ -6,7 +6,7 @@ This project uses the built-in Canvas API to create 2D graphics.
 
 
 ## Demo
-![TBD](![TBD](odbpdemo.gif))
+![demo](odbpdemo.gif)
 
 ## Features
 * Objects can collide against the edge of a screen
