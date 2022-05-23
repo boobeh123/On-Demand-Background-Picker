@@ -25,3 +25,6 @@ This project uses the built-in Canvas API to create 2D graphics.
 ## Optimizations
 * I want to be able to clear my canvas completely. This will allow me to switch between trail and ball animations without refreshing the page.
 * I don't know why spam clicking an animation eventlistener increases the velocity of the ball objects.
+
+## Do you want to build this project?
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_building_practice
