@@ -8,6 +8,7 @@ if (confirm('Warning: Flickering Colors')) {
 // Clickable headers
 document.querySelector('#bouncyTrail').addEventListener('click', loopTrail);// Calls the trail animation
 document.querySelector('#bouncyBall').addEventListener('click', loopBall);  // Calls the ball animation
+document.querySelector('#bouncyPipe').addEventListener('click', loopPipe);  // Calls the second trail animation
 
 // Grabs canvas tag
 const canvas = document.querySelector('canvas');
@@ -131,4 +132,16 @@ function loopBall() {
     }
     // Repeatedly calls ball animation function (clickable header invokes first function call)
     requestAnimationFrame(loopBall);   // Runs a function number of times per second to create a smooth animation
+}
+
+function loopPipe() {
+
+    // For each individual object in the array
+    for (const ball of balls) {
+        ball.draw()                     // Draw the object
+        ball.update()                   // Update the object
+        ball.collisionDetect()          // Determine if two objects overlap
+    }
+    // Repeatedly calls ball animation function (clickable header invokes first function call)
+    requestAnimationFrame(loopPipe);   // Runs a function number of times per second to create a smooth animation
 }
