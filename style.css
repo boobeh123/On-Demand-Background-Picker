@@ -12,17 +12,29 @@ html {
 }
 
 h1 {
-    text-align: center;
     letter-spacing: -1px;
+    /* heading is now invisible but can be highlighted */
+    color: white;
+    /* x-axis, y-axis, blur-radius, color   */
+    text-shadow: 0 0 4px #999;
+    border: 1px solid #999;
+    padding: 0.45rem 0.45rem;
+}
+
+#bouncyTrail {
     /* Position absolute prevents text inferferes with bouncy balls. */
     position: absolute;
     /* top&right moves text to the top right of page */
-    top: -4px;
-    right: 5px;
-    /* heading is now invisible but can be highlighted */
-    color: transparent;
-    /* x-axis, y-axis, blur-radius, color   */
-    text-shadow: 0 0 4px #999;
+    top: 4px;
+    left: 5px;
+
+}
+#bouncyBall {
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    top: 4px;
+    left: 125px;
 }
 
 body {
