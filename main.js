@@ -49,6 +49,7 @@ class Ball {
         ctx.fillStyle = this.color;
         // Creates a circular arc. Ball starting positions is the center of the arc.
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI)
+        // Fills the ball with color
         ctx.fill();
     }
     // Method that moves the ball & determines what happens if it reaches the edge of a screen.
@@ -67,13 +68,13 @@ class Ball {
             this.velocityX = -(this.velocityX);
         }
 
-        // This if statement determines what happens when the ball reaches the top wall.
+        // This if statement determines what happens when the ball reaches the bottom wall.
         if (this.y + this.size >= height) {
             // A positive * negative will result in negative. This reverses the direction.
             this.velocityY = -(this.velocityY);
         }
 
-        // This if statement determines what happens when the ball reaches the bottom wall.
+        // This if statement determines what happens when the ball reaches the top wall.
         if (this.y - this.size <= 0) {
             // A negative * negative will result in positive. This reverses the direction.
             this.velocityY = -(this.velocityY);
@@ -81,14 +82,14 @@ class Ball {
 
         // This moves the ball. Each time we re-draw the ball, draw the ball in a different location. 
         // Take the current location on the canvas and add the velocity to it.
-        this.x += this.velocityX;
-        this.y += this.velocityY;
+        this.x += this.velocityX;   // This moves the ball left to right
+        this.y += this.velocityY;   // This moves the ball up and down
     }
 }
 // Balls that will load on page load
 const balls = [];
 // A while loop that creates Ball objects (with random properties)
-while (balls.length <= 10) {
+while (balls.length <= 50) {
     // Creates Ball objects with the Ball constructor
     const size = randomNumberGenerator(1, 20)
     const ball = new Ball(
@@ -109,10 +110,14 @@ while (balls.length <= 10) {
     // Adds 10 ball objects into the array.
     balls.push(ball);
 }
+// Button calls the for loop on click. This calls the bouncy trail animation.
+document.querySelector('#bouncyTrail').addEventListener('click', loopTrail);
+// Button calls for the loop on click. This calls the bouncy ball animation.
+document.querySelector('#bouncyBall').addEventListener('click', loopBall);
 
 // A for loop that calls the draw method and the update method
 // Draw draws the object. Update updates the position of the object.
-function loopAnimations() {
+function loopTrail() {
     // For of loop to loop the draw & update method
     for (const ball of balls) {
         ball.draw()
@@ -120,7 +125,20 @@ function loopAnimations() {
     }
     // Built-in function that draws a frame of animation
     // This (recursive) function calls the loopAnimations function
-    requestAnimationFrame(loopAnimations);
+    requestAnimationFrame(loopTrail);
 }
-// Calls the for loop on page load. The recursive function will keep calling after.
-loopAnimations();
+
+function loopBall() {
+    // The trail on the ball is due to improper animation.
+    // Each time a frame was animated, the old frame was not cleared from the canvas.
+    // fillStyle covers previous frame with a transparent wipe
+    ctx.fillStyle = 'black';
+    // Fill 
+    ctx.fillRect(0,0, width, height);
+
+    for (const ball of balls) {
+        ball.draw()
+        ball.update()
+    }
+    requestAnimationFrame(loopBall);
+}
