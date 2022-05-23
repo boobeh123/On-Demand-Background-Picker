@@ -85,13 +85,28 @@ class Ball {
         this.x += this.velocityX;   // This moves the ball left to right
         this.y += this.velocityY;   // This moves the ball up and down
     }
+
+    // Method that detects if balls will collide and flickers through random colors while colliding
+    collisionDetect() {
+        for (const ball of balls) {
+            if (!(this === ball)) {
+                const dx = this.x - ball.x;
+                const dy = this.y - ball.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < this.size + ball.size) {
+                    ball.color = this.color = randomColorGenerator();
+                }
+            }
+        }
+    }
 }
 // Balls that will load on page load
 const balls = [];
 // A while loop that creates Ball objects (with random properties)
 while (balls.length <= 50) {
     // Creates Ball objects with the Ball constructor
-    const size = randomNumberGenerator(1, 20)
+    const size = randomNumberGenerator(5, 20)
     const ball = new Ball(
         // x coordinate in Ball constructor parameter
         randomNumberGenerator(0 + size, width - size),  // Min = Left side of screen and buffer ball size && Max = Right side of the screen and buffer ball size
@@ -118,10 +133,18 @@ document.querySelector('#bouncyBall').addEventListener('click', loopBall);
 // A for loop that calls the draw method and the update method
 // Draw draws the object. Update updates the position of the object.
 function loopTrail() {
+    // The trail on the ball is due to improper animation.
+    // Each time a frame was animated, the old frame was not cleared from the canvas.
+    // fillStyle covers previous frame with a transparent wipe
+    ctx.fillStyle = 'rgba(0,0,0,0.01)';
+    // Fill 
+    ctx.fillRect(0,0, width, height);
+
     // For of loop to loop the draw & update method
     for (const ball of balls) {
         ball.draw()
         ball.update()
+        ball.collisionDetect()
     }
     // Built-in function that draws a frame of animation
     // This (recursive) function calls the loopAnimations function
@@ -129,16 +152,13 @@ function loopTrail() {
 }
 
 function loopBall() {
-    // The trail on the ball is due to improper animation.
-    // Each time a frame was animated, the old frame was not cleared from the canvas.
-    // fillStyle covers previous frame with a transparent wipe
-    ctx.fillStyle = 'black';
-    // Fill 
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.fillRect(0,0, width, height);
 
     for (const ball of balls) {
         ball.draw()
         ball.update()
+        ball.collisionDetect()
     }
     requestAnimationFrame(loopBall);
 }
