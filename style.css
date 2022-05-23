@@ -42,3 +42,30 @@ body {
     /* Hides element content outside the body*/
     overflow: hidden; 
 }
+#socialOne {
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    bottom: 4px;
+    right: 5px;
+}
+#socialTwo {
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    bottom: 4px;
+    left: 5px;
+}
+
+#socialOne a:hover {
+    color: black;
+}
+#socialTwo a:hover {
+    color: dodgerblue;
+}
+#socialOne a {
+    text-decoration: none;
+}
+#socialTwo a {
+    text-decoration: none;
+}
