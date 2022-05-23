@@ -1,164 +1,134 @@
-/*
-Canvas is a built-in API that allows 2D animations in browser
+// Alert Epilepsy users
+if (confirm('Warning: Flickering Colors')) {
+    console.log('Agreed');
+} else {
+    close();    
+}
 
-Set up the canvas
-Get access to drawing properties and methods
-*/
+// Clickable headers
+document.querySelector('#bouncyTrail').addEventListener('click', loopTrail);// Calls the trail animation
+document.querySelector('#bouncyBall').addEventListener('click', loopBall);  // Calls the ball animation
 
 // Grabs canvas tag
 const canvas = document.querySelector('canvas');
-// Drawing context on the canvas. Supports 2D and 3D. "Tells computer to use the 2d library"
+// Drawing context on the canvas. Supports 2D and 3D.
 const ctx = canvas.getContext('2d');
-// Set width & height of the canvas to the viewport .
+// Set width & height of the canvas to the viewport.
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-// This function generates random (whole) numbers.
-// The numbers generated will control ball size, velocity, and inertia.
+// This function generates random whole numbers.
 function randomNumberGenerator(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// This function generates a random RGB color
-// The numbers generated picks a RGB color between 0 and 255
+// This function generates a random colors.
 function randomColorGenerator() {
     return `rgb(${randomNumberGenerator(0, 255)}, ${randomNumberGenerator(0, 255)}, ${randomNumberGenerator(0, 255)})`   
 }
 
 // Creates ball objects
 class Ball {
-    // x & y are coordinates for ball starting position
-    // velocityX & velocityY is the ball speed/angle 
-    // color is the color of the ball object
-    // size is the size of the ball object
     constructor(x, y, velocityX, velocityY, color, size) {
         // Setting up the properties of the ball object
-        this.x = x;
-        this.y = y;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
-        this.color = color;
-        this.size = size;
+        this.x = x;                 // starting position (horizontal)
+        this.y = y;                 // starting position (vertical)
+        this.velocityX = velocityX; // speed
+        this.velocityY = velocityY; // speed
+        this.color = color;         // color
+        this.size = size;           // size     
     }
 
-    // Method that will draw the ball object
+    // drawing the object
     draw () {
-        // ctx accesses the Canvas commands. beginPath starts drawing shape
-        ctx.beginPath();
-        // The color generated will fill the ball object
-        ctx.fillStyle = this.color;
-        // Creates a circular arc. Ball starting positions is the center of the arc.
-        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI)
-        // Fills the ball with color
-        ctx.fill();
+        ctx.beginPath();                                    // beginPath starts drawing shape
+        ctx.fillStyle = this.color;                         // fillStyle paints shape
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI); // arc draws a circular arc
+        ctx.fill();                                         // fill "pours paint" into the shape
     }
-    // Method that moves the ball & determines what happens if it reaches the edge of a screen.
+
+    // updating the object position
     update() {
-        // This if statement determines what happens when the ball reaches the right wall.
-        // this.x is the center of the ball. this.size are the edges of the ball.
-        // If center + edges is greater than the innerWidth of the screen...Then reverse the direction of the ball.
-        if (this.x + this.size >= width) {
-            // A positive * negative will result in negative. This reverses the direction.
-            this.velocityX = -(this.velocityX);
+        if (this.x + this.size >= width) {      // If object position exceeds the width of the right screen 
+            this.velocityX = -(this.velocityX); // Then update object position away from the right screen
         }
 
-        // This if statement determines what happens when the ball reaches the left wall.
-        if (this.x - this.size <= 0) {
-            // A negative * negative will result in positive. This reverses the direction.
-            this.velocityX = -(this.velocityX);
+        if (this.x - this.size <= 0) {          // If object position exceeds the width of the left screen
+            this.velocityX = -(this.velocityX); // Then update object position away from the left screen
         }
 
-        // This if statement determines what happens when the ball reaches the bottom wall.
-        if (this.y + this.size >= height) {
-            // A positive * negative will result in negative. This reverses the direction.
-            this.velocityY = -(this.velocityY);
+        if (this.y + this.size >= height) {    // If object position exceeds the height of the bottom screen
+            this.velocityY = -(this.velocityY); // Then update object position away from the bottom screen
         }
 
-        // This if statement determines what happens when the ball reaches the top wall.
-        if (this.y - this.size <= 0) {
-            // A negative * negative will result in positive. This reverses the direction.
-            this.velocityY = -(this.velocityY);
+        if (this.y - this.size <= 0) {          // If object position exceeds the height of the top screen
+            this.velocityY = -(this.velocityY); // Then update object position away from the top screen
         }
 
-        // This moves the ball. Each time we re-draw the ball, draw the ball in a different location. 
-        // Take the current location on the canvas and add the velocity to it.
-        this.x += this.velocityX;   // This moves the ball left to right
-        this.y += this.velocityY;   // This moves the ball up and down
+        this.x += this.velocityX;   // updates object position left to right
+        this.y += this.velocityY;   // updates object posion vertically
     }
 
-    // Method that detects if balls will collide and flickers through random colors while colliding
+    // two objects interacting
     collisionDetect() {
-        for (const ball of balls) {
-            if (!(this === ball)) {
-                const dx = this.x - ball.x;
-                const dy = this.y - ball.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+        for (const ball of balls) { // balls is an array of many objects
+            if (!(this === ball)) { // ball is an individual object
+                const dx = this.x - ball.x; // the edge of two individual objects
+                const dy = this.y - ball.y; // the edge of two individual objects
+                const distance = Math.sqrt(dx * dx + dy * dy);  // circle collision algorithm
 
-                if (distance < this.size + ball.size) {
-                    ball.color = this.color = randomColorGenerator();
+                if (distance < this.size + ball.size) {              // if two edges overlap
+                    ball.color = this.color = randomColorGenerator();// then flicker colors
                 }
             }
         }
     }
 }
-// Balls that will load on page load
-const balls = [];
-// A while loop that creates Ball objects (with random properties)
-while (balls.length <= 50) {
-    // Creates Ball objects with the Ball constructor
-    const size = randomNumberGenerator(5, 20)
+
+const balls = [];           // Will Store 50 objects 
+while (balls.length <= 50) {// Generates 50 objects
+    // Passes arguments into Ball constructor 50 times
+    const size = randomNumberGenerator(5, 20)           // generates argument for this.size*
     const ball = new Ball(
-        // x coordinate in Ball constructor parameter
-        randomNumberGenerator(0 + size, width - size),  // Min = Left side of screen and buffer ball size && Max = Right side of the screen and buffer ball size
-        // y coordinate in Ball constructor parameter
-        randomNumberGenerator(0 + size, height - size), // Min = Bottom side of screen and buffer ball size && Max = Top side of the screen and buffer ball size
-        // horizontal velocity in Ball constructor parameter
-        randomNumberGenerator(1, 4),
-        // vertical velocity in Ball constructor parameter
-        randomNumberGenerator(1, 4),
-        // color in Ball constructor parameter
-        randomColorGenerator(),
-        // size in Ball constructor parameter
-        size
+        randomNumberGenerator(0 + size, width - size),  // argument for this.x 
+        randomNumberGenerator(0 + size, height - size), // argument for this.y
+        randomNumberGenerator(1, 4),                    // argument for this.velocityX
+        randomNumberGenerator(1, 4),                    // argument for this.velocityY
+        randomColorGenerator(),                         // argument for this.color
+        size                                            // argument for this.size*
     )
-    
-    // Adds 10 ball objects into the array.
+    // Adds 50 objects into the array.
     balls.push(ball);
 }
-// Button calls the for loop on click. This calls the bouncy trail animation.
-document.querySelector('#bouncyTrail').addEventListener('click', loopTrail);
-// Button calls for the loop on click. This calls the bouncy ball animation.
-document.querySelector('#bouncyBall').addEventListener('click', loopBall);
 
-// A for loop that calls the draw method and the update method
-// Draw draws the object. Update updates the position of the object.
+// Trail animation
 function loopTrail() {
-    // The trail on the ball is due to improper animation.
-    // Each time a frame was animated, the old frame was not cleared from the canvas.
-    // fillStyle covers previous frame with a transparent wipe
-    ctx.fillStyle = 'rgba(0,0,0,0.01)';
-    // Fill 
-    ctx.fillRect(0,0, width, height);
+    // Draws on the canvas
+    ctx.fillStyle = 'rgba(0,0,0,0.01)'; // Paints the canvas to semi-transparent black
+    ctx.fillRect(0,0, width, height);   // Draws rectangle across the canvas
 
-    // For of loop to loop the draw & update method
+    // For each individual object in the array
     for (const ball of balls) {
-        ball.draw()
-        ball.update()
-        ball.collisionDetect()
+        ball.draw()                     // Draw the object
+        ball.update()                   // Update the object
+        ball.collisionDetect()          // Determine if two objects overlap
     }
-    // Built-in function that draws a frame of animation
-    // This (recursive) function calls the loopAnimations function
-    requestAnimationFrame(loopTrail);
+    // Repeatedly calls trail animation function (clickable header invokes first function call)
+    requestAnimationFrame(loopTrail);   // Runs a function number of times per second to create a smooth animation
 }
 
+// Ball animation
 function loopBall() {
-    ctx.fillStyle = 'rgba(0,0,0,0.3)';
-    ctx.fillRect(0,0, width, height);
-
+    // Draws on the canvas
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';  // Paints the canvas to semi-transparent black
+    ctx.fillRect(0,0, width, height);   // Draws rectangle across the canvas
+    
+    // For each individual object in the array
     for (const ball of balls) {
-        ball.draw()
-        ball.update()
-        ball.collisionDetect()
+        ball.draw()                     // Draw the object
+        ball.update()                   // Update the object
+        ball.collisionDetect()          // Determine if two objects overlap
     }
-    requestAnimationFrame(loopBall);
+    // Repeatedly calls ball animation function (clickable header invokes first function call)
+    requestAnimationFrame(loopBall);   // Runs a function number of times per second to create a smooth animation
 }
