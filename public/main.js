@@ -1,7 +1,7 @@
 // Alert Epilepsy users
-if (!localStorage.getItem('agreedOnce')) {
+if (!localStorage.getItem('clickedAgree')) {
     if (confirm('READ -> WARNING: Flickering Colors')) {
-        localStorage.setItem('agreedOnce', 1);
+        localStorage.setItem('clickedAgree', `I clicked agree on ${new Date()}`);
     } else {
         close();
     }
