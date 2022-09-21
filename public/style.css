@@ -1,0 +1,64 @@
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 62.5%;
+    box-sizing: border-box;
+    background-color: black;
+    height: 100vh;
+}
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+h1 {
+    letter-spacing: -1px;
+    color: white;
+    text-shadow: 0 0 4px #999;
+    border: 1px solid #999;
+    padding: 0.45rem 0.45rem;
+}
+
+#bouncyTrail {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
+#bouncyBall {
+    position: absolute;
+    top: 4px;
+    left: 130px;
+}
+
+/* #bouncyPipe {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+} */
+
+body {
+    height: inherit;
+    /* Hides element content outside the body*/
+    overflow: hidden; 
+}
+#socialOne {
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    bottom: 4px;
+    right: 5px;
+}
+#socialTwo {
+    /* Position absolute prevents text inferferes with bouncy balls. */
+    position: absolute;
+    /* top&right moves text to the top right of page */
+    bottom: 4px;
+    left: 5px;
+}
+
+#socialOne a:hover {
+    color: black;
+}
+#socialTwo a:hover {
+    color: dodgerblue;
+}
